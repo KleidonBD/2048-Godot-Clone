@@ -3,6 +3,7 @@ extends PanelContainer
 signal game_lost
 
 const NUMBER_TILE := preload("res://main_scenes/number_tile.tscn")
+const WIN_VALUE : int = 2048
 
 @onready var number_tiles : Node = $NumberTiles
 @onready var rows : Array[Node] = $Rows.get_children()
@@ -54,7 +55,7 @@ func _input(event : InputEvent) -> void:
 	
 	if move_made:
 		# Tell all number tiles to animate to their new properties (position, value, color).
-		get_tree().call_group("number_tiles", "update")
+		get_tree().call_group(NumberTile.GROUP_NAME, "update")
 		# Only generate a new tile if the board changed this input.
 		generate_tile()
 	
@@ -70,18 +71,10 @@ func generate_board() -> void:
 
 func generate_tile() -> void:
 	# Roll value of generated tile. 90% chance to be 2, 10% to be 4.
-	var val : int
-	if randf() <= 0.1:
-		val = 4
-	else:
-		val = 2
+	var val : int = 4 if randf() <= 0.1 else 2
 	
 	# Generate an Array of all empty squares on the board.
-	var empty_squares : Array[Square] = []
-	for i : int in range(1, 5):
-		for square : Square in get_row(i):
-			if square.is_empty():
-				empty_squares.append(square)
+	var empty_squares : Array[Square] = get_empty_squares()
 	
 	# Randomly choose an empty square from the array.
 	var square : Square = empty_squares.pick_random()
@@ -103,6 +96,14 @@ func generate_tile() -> void:
 	if empty_squares.is_empty() and loss_check():
 		game_lost.emit()
 
+func get_empty_squares() -> Array[Square]:
+	var empty_squares : Array[Square] = []
+	for i : int in range(1, 5):
+		for square : Square in get_row(i):
+			if square.is_empty():
+				empty_squares.append(square)
+	return empty_squares
+
 func clear_board() -> void:
 	# Delete every number tile and unassign them from their squares.
 	for tile : NumberTile in number_tiles.get_children():
@@ -121,7 +122,6 @@ func loss_check() -> bool:
 			else:
 				last_square = square
 		return false
-	
 	# Call the anonymous function on every row and column. Returns false (i.e. not a loss) if at least
 	# one row or column is moveable.
 	for i : int in range(1, 5):
@@ -189,7 +189,7 @@ func slide_row(row : Array[Square], reverse : bool = false) -> bool:
 				ScoreKeeper.increase_score(previous_tile.next_value)
 				# If the merged tile is 2048, a win signal is emitted.
 				# A special effect will occur the first time this occurs in a game, but the game will continue.
-				if previous_tile.next_value == 2048:
+				if previous_tile.next_value == WIN_VALUE:
 					ScoreKeeper.trigger_win()
 				break
 			else:

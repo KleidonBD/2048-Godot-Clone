@@ -1,5 +1,7 @@
 class_name NumberTile extends ColorRect
 
+const GROUP_NAME : String = "number_tiles"
+
 # A static variable to store all tweens that are still in the middle of their animations.
 static var updating_tweens : Array[Tween] = []
 
@@ -36,7 +38,7 @@ var next_square : Square = null
 
 func _ready() -> void:
 	# The number_tiles group is used by the board to tell them all to update simultaneously.
-	add_to_group("number_tiles")
+	add_to_group(GROUP_NAME)
 
 func update() -> void:
 	# If there is no next_square, the tile has not moved and does not neeed to update.
@@ -53,17 +55,10 @@ func update() -> void:
 		# Update the next square to be the current square, as this tile has finished moving to it.
 		current_square = next_square
 
-
 func move_pos(new_pos : Vector2) -> Tween:
 	# Animate the tile to the new global position.
-	var tween : Tween = create_tween()
+	var tween : Tween = create_and_store_tween()
 	tween.tween_property(self, "global_position", new_pos, 0.1)
-	# Add this tween to updating_tweens.
-	updating_tweens.append(tween)
-	# Tell the tween to remove itself from updating_tweens once its animation finishes.
-	tween.finished.connect(func() -> void:
-		updating_tweens.erase(tween)
-		)
 	# Return the tween so the calling function can access it and wait for it to finish.
 	return tween
 
@@ -80,18 +75,9 @@ func update_value() -> void:
 	# Update the label to the new value.
 	label.text = str(current_value)
 	
-	# Get the next color based on the new value. Every value from 2-2048 has a preset color.
-	# From 4096 on, the color simply gets progressively darker.
-	var new_color : Color = colors[current_value] if current_value <= 2048 else color - Color(0.05, 0.05, 0.05, 0)
+	var new_color : Color = get_tile_color(current_value)
 	
-	# Create the tween, add it to updating_tweens, and tell it to remove itself from updating_tweens once its
-	# animation finishes.
-	var tween : Tween = create_tween()
-	updating_tweens.append(tween)
-	tween.finished.connect(func() -> void:
-		updating_tweens.erase(tween)
-		)
-	
+	var tween : Tween = create_and_store_tween()
 	# Fade from the current color into the new color.
 	tween.tween_property(self, "color", new_color, 0.1)
 	# Grow the tile by 15% and then shrink it back to its normal size.
@@ -104,27 +90,25 @@ func instant_update() -> void:
 	current_square = next_square
 	current_value = next_value
 	label.text = str(current_value)
-	color = colors[current_value] if current_value <= 2048 else color - Color(0.05, 0.05, 0.05, 0)
+	color = get_tile_color(current_value)
 	global_position = current_square.global_position
+
+func get_tile_color(value : int) -> Color:
+	# Get the next color based on the value. Every value from 2-2048 has a preset color.
+	# From 4096 on, the color simply gets progressively darker.
+	return colors[value] if value <= 2048 else color - Color(0.05, 0.05, 0.05, 0)
 
 # Function called by the board when it instantiates this tile.
 func spawn(square : Square, initial_value : int = 2) -> void:
 	# Set the tile's first value (it can be either 2 or 4.)
-	if not initial_value == 2:
-		next_value = initial_value
+	next_value = initial_value
 	current_square = square
 	next_square = square
 	
 	# Instantly update the tile to all of its initial properties (position, color, value)
 	instant_update()
 	
-	# Create a tween, add it to updating_values, and tell it to delete itself when its animation finishes.
-	var tween : Tween = create_tween()
-	updating_tweens.append(tween)
-	tween.finished.connect(func() -> void:
-		updating_tweens.erase(tween)
-		)
-	
+	var tween : Tween = create_and_store_tween()
 	# Start the tile with a size of 0.
 	tween.tween_property(self, "scale", Vector2(0, 0), 0)
 	# Grow it to 1.2x its normal size for a bit of juice.
@@ -136,3 +120,13 @@ func spawn(square : Square, initial_value : int = 2) -> void:
 	# Reset the rotation degrees to 0, which is identical to 360.
 	# If it remains 360, it cannot spin again as it will try going from 360 to 360, which does nothing.
 	tween.parallel().tween_property(self, "rotation_degrees", 0, 0)
+
+func create_and_store_tween() -> Tween:
+	# Create the tween, add it to updating_tweens, and tell it to remove itself from updating_tweens once its
+	# animation finishes.
+	var tween : Tween = create_tween()
+	updating_tweens.append(tween)
+	tween.finished.connect(func() -> void:
+		updating_tweens.erase(tween)
+		)
+	return tween
