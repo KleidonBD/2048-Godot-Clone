@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3 uid="uid://clbaugwtjo1rm"]
+
+[ext_resource type="Script" path="res://main_scenes/number_tile.gd" id="1_7e1b3"]
+
+[node name="NumberTile" type="ColorRect"]
+custom_minimum_size = Vector2(90, 90)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -33.0
+offset_top = -205.0
+offset_right = 57.0
+offset_bottom = -115.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(45, 45)
+color = Color(0.509804, 1, 1, 1)
+script = ExtResource("1_7e1b3")
+colors = {
+0: Color(0.486275, 0, 0.486275, 1),
+2: Color(0.552941, 0.952941, 1, 1),
+4: Color(0.498039, 1, 0.831373, 1),
+8: Color(0.180392, 0.545098, 0.341176, 1),
+16: Color(0.603922, 0.803922, 0.196078, 1),
+32: Color(1, 0.843137, 0, 1),
+64: Color(1, 0.647059, 0, 1),
+128: Color(0.960784, 0.356863, 0, 1),
+256: Color(0.788235, 0.141176, 0, 1),
+512: Color(0.788235, 0.054902, 0, 1),
+1024: Color(0.716778, 0.00221478, 0.615231, 1),
+2048: Color(0.486275, 0, 0.486275, 1)
+}
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 24
+text = "2"
+horizontal_alignment = 1
+vertical_alignment = 1

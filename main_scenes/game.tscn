@@ -1,0 +1,452 @@
+[gd_scene load_steps=20 format=3 uid="uid://d2hdkxra7liys"]
+
+[ext_resource type="Script" path="res://main_scenes/game.gd" id="1_a30d6"]
+[ext_resource type="Shader" path="res://shaders/background_fade.gdshader" id="1_qusob"]
+[ext_resource type="Script" path="res://main_scenes/board.gd" id="2_t764l"]
+[ext_resource type="PackedScene" uid="uid://c3wc0e5t261mv" path="res://main_scenes/square.tscn" id="4_4rk0h"]
+[ext_resource type="Script" path="res://main_scenes/lose_screen.gd" id="5_2tq6b"]
+[ext_resource type="Script" path="res://main_scenes/button_outline.gd" id="5_t5vyi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_16y6h"]
+shader = ExtResource("1_qusob")
+shader_parameter/strength = 1.0
+shader_parameter/speed = 0.01
+shader_parameter/gradient = 0.1
+shader_parameter/angle = 130.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kodbi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v78h6"]
+content_margin_left = 20.0
+content_margin_top = 14.0
+content_margin_right = 20.0
+content_margin_bottom = 14.0
+bg_color = Color(0, 0, 0, 0.627451)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 20
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0r4jq"]
+content_margin_left = 20.0
+content_margin_top = 14.0
+content_margin_right = 20.0
+content_margin_bottom = 14.0
+bg_color = Color(1, 1, 1, 0.627451)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 20
+shadow_color = Color(1, 1, 1, 0.6)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5i5qy"]
+content_margin_left = 20.0
+content_margin_top = 14.0
+content_margin_right = 20.0
+content_margin_bottom = 14.0
+bg_color = Color(0, 0, 0, 0.627451)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qtoci"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.0627451, 0, 0.105882, 0.705882)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="Curve" id="Curve_g3a4p"]
+max_value = 100.0
+_data = [Vector2(0, 100), 0.0, 0.0, 0, 0, Vector2(0.255245, 25.2131), -100.965, -100.965, 0, 0, Vector2(1, 3.05398), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_g44qt"]
+curve = SubResource("Curve_g3a4p")
+
+[sub_resource type="Curve" id="Curve_xny3j"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.510653), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_oatkv"]
+curve = SubResource("Curve_xny3j")
+
+[sub_resource type="Curve" id="Curve_afuwt"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_34tnf"]
+curve = SubResource("Curve_afuwt")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_prdn2"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 20.0
+direction = Vector3(0, -1, 0)
+spread = 10.0
+initial_velocity_min = 150.0
+initial_velocity_max = 300.0
+angular_velocity_min = 360.0
+angular_velocity_max = 360.0
+gravity = Vector3(0, 800, 0)
+linear_accel_max = 100.0
+linear_accel_curve = SubResource("CurveTexture_g44qt")
+scale_max = 15.0
+scale_curve = SubResource("CurveTexture_oatkv")
+color = Color(0, 0.666667, 1, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+turbulence_enabled = true
+turbulence_noise_strength = 20.0
+turbulence_noise_scale = 0.0
+turbulence_noise_speed = Vector3(200, 100, 0)
+turbulence_noise_speed_random = 4.0
+turbulence_influence_max = 0.25
+turbulence_initial_displacement_min = -100.0
+turbulence_initial_displacement_max = 100.0
+turbulence_influence_over_life = SubResource("CurveTexture_34tnf")
+
+[node name="Game" type="Node"]
+script = ExtResource("1_a30d6")
+
+[node name="Background" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_16y6h")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Menu" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="Spacer" type="Control" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Name Label" type="Label" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 32
+theme_override_font_sizes/font_size = 96
+text = "2048"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HighScoreLabel" type="Label" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 40
+text = "High Score:
+0"
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="Menu"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+focus_mode = 0
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 32
+theme_override_styles/focus = SubResource("StyleBoxEmpty_kodbi")
+theme_override_styles/hover = SubResource("StyleBoxFlat_v78h6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_0r4jq")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5i5qy")
+text = "Start Game"
+alignment = 0
+script = ExtResource("5_t5vyi")
+
+[node name="Spacer2" type="Control" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayArea" type="VBoxContainer" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScoreLabel" type="Label" parent="PlayArea"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 48
+text = "2048"
+vertical_alignment = 1
+
+[node name="Board" type="PanelContainer" parent="PlayArea"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_qtoci")
+script = ExtResource("2_t764l")
+
+[node name="Rows" type="VBoxContainer" parent="PlayArea/Board"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Row1" type="HBoxContainer" parent="PlayArea/Board/Rows"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Square1" parent="PlayArea/Board/Rows/Row1" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square2" parent="PlayArea/Board/Rows/Row1" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square3" parent="PlayArea/Board/Rows/Row1" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square4" parent="PlayArea/Board/Rows/Row1" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Row2" type="HBoxContainer" parent="PlayArea/Board/Rows"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Square1" parent="PlayArea/Board/Rows/Row2" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square2" parent="PlayArea/Board/Rows/Row2" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square3" parent="PlayArea/Board/Rows/Row2" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square4" parent="PlayArea/Board/Rows/Row2" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Row3" type="HBoxContainer" parent="PlayArea/Board/Rows"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Square1" parent="PlayArea/Board/Rows/Row3" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square2" parent="PlayArea/Board/Rows/Row3" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square3" parent="PlayArea/Board/Rows/Row3" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square4" parent="PlayArea/Board/Rows/Row3" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Row4" type="HBoxContainer" parent="PlayArea/Board/Rows"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Square1" parent="PlayArea/Board/Rows/Row4" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square2" parent="PlayArea/Board/Rows/Row4" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square3" parent="PlayArea/Board/Rows/Row4" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square4" parent="PlayArea/Board/Rows/Row4" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="NumberTiles" type="Node" parent="PlayArea/Board"]
+
+[node name="ConfettiLayer" type="CanvasLayer" parent="PlayArea/Board"]
+follow_viewport_enabled = true
+
+[node name="Control" type="Control" parent="PlayArea/Board/ConfettiLayer"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="Confetti" type="GPUParticles2D" parent="PlayArea/Board/ConfettiLayer/Control"]
+unique_name_in_owner = true
+emitting = false
+amount = 2048
+process_material = SubResource("ParticleProcessMaterial_prdn2")
+lifetime = 3.0
+one_shot = true
+explosiveness = 1.0
+visibility_rect = Rect2(0, 0, 0, 0)
+local_coords = true
+
+[node name="Spacer" type="Control" parent="PlayArea"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ResetButton" type="Button" parent="PlayArea/Spacer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -77.5
+offset_top = -25.0
+offset_right = 77.5
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 24
+theme_override_styles/focus = SubResource("StyleBoxEmpty_kodbi")
+theme_override_styles/hover = SubResource("StyleBoxFlat_v78h6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_0r4jq")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5i5qy")
+text = "New Game"
+script = ExtResource("5_t5vyi")
+
+[node name="LoseScreen" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_2tq6b")
+
+[node name="ColorRect" type="ColorRect" parent="LoseScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.784314)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LoseScreen"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -203.5
+offset_bottom = 203.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 32
+
+[node name="GameOverLabel" type="Label" parent="LoseScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 48
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="HighScoreLabel" type="Label" parent="LoseScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 32
+text = "High Score:
+0"
+horizontal_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="LoseScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 32
+text = "Your Score:
+0"
+horizontal_alignment = 1
+
+[node name="NewGameButton" type="Button" parent="LoseScreen/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 32
+theme_override_styles/focus = SubResource("StyleBoxEmpty_kodbi")
+theme_override_styles/hover = SubResource("StyleBoxFlat_v78h6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_0r4jq")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5i5qy")
+text = "New Game"
+script = ExtResource("5_t5vyi")
+
+[node name="ReturnButton" type="Button" parent="LoseScreen/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 32
+theme_override_styles/focus = SubResource("StyleBoxEmpty_kodbi")
+theme_override_styles/hover = SubResource("StyleBoxFlat_v78h6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_0r4jq")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5i5qy")
+text = "Return to Menu"
+script = ExtResource("5_t5vyi")
