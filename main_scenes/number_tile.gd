@@ -96,7 +96,7 @@ func instant_update() -> void:
 func get_tile_color(value : int) -> Color:
 	# Get the next color based on the value. Every value from 2-2048 has a preset color.
 	# From 4096 on, the color simply gets progressively darker.
-	return colors[value] if value <= 2048 else color - Color(0.05, 0.05, 0.05, 0)
+	return colors[value] if value in colors.keys() else color - Color(0.05, 0.05, 0.05, 0)
 
 # Function called by the board when it instantiates this tile.
 func spawn(square : Square, initial_value : int = 2) -> void:
