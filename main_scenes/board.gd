@@ -45,11 +45,11 @@ func _input(event : InputEvent) -> void:
 				move_made = true
 	elif event.is_action_pressed("ui_up"):
 		for i : int in range(1, 5):
-			if slide_row(get_collumn(i)):
+			if slide_row(get_column(i)):
 				move_made = true
 	elif event.is_action_pressed("ui_down"):
 		for i : int in range(1, 5):
-			if slide_row(get_collumn(i), true):
+			if slide_row(get_column(i), true):
 				move_made = true
 	
 	if move_made:
@@ -122,12 +122,12 @@ func loss_check() -> bool:
 				last_square = square
 		return false
 	
-	# Call the anonymous function on every row and collumn. Returns false (i.e. not a loss) if at least
-	# one row or collumn is moveable.
+	# Call the anonymous function on every row and column. Returns false (i.e. not a loss) if at least
+	# one row or column is moveable.
 	for i : int in range(1, 5):
 		var row : Array[Square] = get_row(i)
-		var collumn : Array[Square] = get_collumn(i)
-		if check_row_movable.call(row) or check_row_movable.call(collumn):
+		var column : Array[Square] = get_column(i)
+		if check_row_movable.call(row) or check_row_movable.call(column):
 			return false # The game is not yet lost as another move can still be made.
 	return true # The game is lost as there are no more possible moves to be made.
 
@@ -209,13 +209,13 @@ func get_row(row : int) -> Array[Square]:
 	
 	return row_array
 
-func get_collumn(col : int) -> Array[Square]:
+func get_column(col : int) -> Array[Square]:
 	if col > 4 or col < 1:
-		push_error("Invalid collumn.")
+		push_error("Invalid column.")
 	
-	var collumn : Array[Square] = []
-	# Assign the index (minus one) of each row to a new Array to get the collumn of that index.
+	var column : Array[Square] = []
+	# Assign the index (minus one) of each row to a new Array to get the column of that index.
 	for row : Node in rows:
-		collumn.append(row.get_child(col - 1))
+		column.append(row.get_child(col - 1))
 	
-	return collumn
+	return column
