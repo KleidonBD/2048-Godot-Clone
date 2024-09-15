@@ -228,6 +228,22 @@ script = ExtResource("2_t764l")
 layout_mode = 2
 theme_override_constants/separation = 8
 
+[node name="Row0" type="HBoxContainer" parent="PlayArea/Board/Rows"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Square1" parent="PlayArea/Board/Rows/Row0" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square2" parent="PlayArea/Board/Rows/Row0" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square3" parent="PlayArea/Board/Rows/Row0" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
+[node name="Square4" parent="PlayArea/Board/Rows/Row0" instance=ExtResource("4_4rk0h")]
+layout_mode = 2
+
 [node name="Row1" type="HBoxContainer" parent="PlayArea/Board/Rows"]
 layout_mode = 2
 theme_override_constants/separation = 8
@@ -274,22 +290,6 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Square4" parent="PlayArea/Board/Rows/Row3" instance=ExtResource("4_4rk0h")]
-layout_mode = 2
-
-[node name="Row4" type="HBoxContainer" parent="PlayArea/Board/Rows"]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="Square1" parent="PlayArea/Board/Rows/Row4" instance=ExtResource("4_4rk0h")]
-layout_mode = 2
-
-[node name="Square2" parent="PlayArea/Board/Rows/Row4" instance=ExtResource("4_4rk0h")]
-layout_mode = 2
-
-[node name="Square3" parent="PlayArea/Board/Rows/Row4" instance=ExtResource("4_4rk0h")]
-layout_mode = 2
-
-[node name="Square4" parent="PlayArea/Board/Rows/Row4" instance=ExtResource("4_4rk0h")]
 layout_mode = 2
 
 [node name="NumberTiles" type="Node" parent="PlayArea/Board"]

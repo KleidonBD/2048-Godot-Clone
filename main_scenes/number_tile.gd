@@ -1,6 +1,7 @@
 class_name NumberTile extends ColorRect
 
 const GROUP_NAME : String = "number_tiles"
+const COLOR_DARKEN : Color = Color(0.05, 0.05, 0.05, 0)
 
 # A static variable to store all tweens that are still in the middle of their animations.
 static var updating_tweens : Array[Tween] = []
@@ -81,8 +82,8 @@ func update_value() -> void:
 	# Fade from the current color into the new color.
 	tween.tween_property(self, "color", new_color, 0.1)
 	# Grow the tile by 15% and then shrink it back to its normal size.
-	tween.parallel().tween_property(self, "scale", Vector2(1.15, 1.15), 0.1)
-	tween.tween_property(self, "scale", Vector2(1, 1), 0.05)
+	tween.parallel().tween_property(self, "scale", Vector2.ONE * 1.15, 0.1)
+	tween.tween_property(self, "scale", Vector2.ONE, 0.05)
 
 func instant_update() -> void:
 	# Instantly update all values, skipping animations so a new input can be handled without waiting for them to
@@ -96,7 +97,7 @@ func instant_update() -> void:
 func get_tile_color(value : int) -> Color:
 	# Get the next color based on the value. Every value from 2-2048 has a preset color.
 	# From 4096 on, the color simply gets progressively darker.
-	return colors[value] if value in colors.keys() else color - Color(0.05, 0.05, 0.05, 0)
+	return colors[value] if value in colors.keys() else color - COLOR_DARKEN
 
 # Function called by the board when it instantiates this tile.
 func spawn(square : Square, initial_value : int = 2) -> void:
@@ -110,13 +111,13 @@ func spawn(square : Square, initial_value : int = 2) -> void:
 	
 	var tween : Tween = create_and_store_tween()
 	# Start the tile with a size of 0.
-	tween.tween_property(self, "scale", Vector2(0, 0), 0)
+	tween.tween_property(self, "scale", Vector2.ZERO, 0)
 	# Grow it to 1.2x its normal size for a bit of juice.
-	tween.tween_property(self, "scale", Vector2(1.2, 1.2), 0.2)
+	tween.tween_property(self, "scale", Vector2.ONE * 1.2, 0.2)
 	# While it's growing, spin it.
 	tween.parallel().tween_property(self, "rotation_degrees", 360, 0.2)
 	# Once it finishes growing and spinning, quickly shrink it down to its normal size.
-	tween.tween_property(self, "scale", Vector2(1, 1), 0.05)
+	tween.tween_property(self, "scale", Vector2.ONE, 0.05)
 	# Reset the rotation degrees to 0, which is identical to 360.
 	# If it remains 360, it cannot spin again as it will try going from 360 to 360, which does nothing.
 	tween.parallel().tween_property(self, "rotation_degrees", 0, 0)

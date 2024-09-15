@@ -3,6 +3,7 @@ extends PanelContainer
 signal game_lost
 
 const NUMBER_TILE := preload("res://main_scenes/number_tile.tscn")
+const BOARD_SIZE : int = 4
 const WIN_VALUE : int = 2048
 
 @onready var number_tiles : Node = $NumberTiles
@@ -30,26 +31,26 @@ func _input(event : InputEvent) -> void:
 		tween.custom_step(1.0)
 		tween.finished.emit()
 	# Ensure all number tiles have their latest properties (color, position, etc.) before new changes are made.
-	get_tree().call_group("number_tiles", "instant_update")
+	get_tree().call_group(NumberTile.GROUP_NAME, "instant_update")
 	
 	# Bool that indicates whether input resulted in any change to the board.
 	var move_made : bool = false
 	
 	# Input handling.
 	if event.is_action_pressed("ui_left"):
-		for i : int in range(1, 5):
+		for i : int in range(BOARD_SIZE):
 			if slide_row(get_row(i)):
 				move_made = true
 	elif event.is_action_pressed("ui_right"):
-		for i : int in range(1, 5):
+		for i : int in range(BOARD_SIZE):
 			if slide_row(get_row(i), true):
 				move_made = true
 	elif event.is_action_pressed("ui_up"):
-		for i : int in range(1, 5):
+		for i : int in range(BOARD_SIZE):
 			if slide_row(get_column(i)):
 				move_made = true
 	elif event.is_action_pressed("ui_down"):
-		for i : int in range(1, 5):
+		for i : int in range(BOARD_SIZE):
 			if slide_row(get_column(i), true):
 				move_made = true
 	
@@ -98,7 +99,7 @@ func generate_tile() -> void:
 
 func get_empty_squares() -> Array[Square]:
 	var empty_squares : Array[Square] = []
-	for i : int in range(1, 5):
+	for i : int in range(BOARD_SIZE):
 		for square : Square in get_row(i):
 			if square.is_empty():
 				empty_squares.append(square)
@@ -124,7 +125,7 @@ func loss_check() -> bool:
 		return false
 	# Call the anonymous function on every row and column. Returns false (i.e. not a loss) if at least
 	# one row or column is moveable.
-	for i : int in range(1, 5):
+	for i : int in range(BOARD_SIZE):
 		var row : Array[Square] = get_row(i)
 		var column : Array[Square] = get_column(i)
 		if check_row_movable.call(row) or check_row_movable.call(column):
@@ -199,23 +200,22 @@ func slide_row(row : Array[Square], reverse : bool = false) -> bool:
 	return changed
 
 func get_row(row : int) -> Array[Square]:
-	if row > 4 or row < 1:
+	if row > BOARD_SIZE - 1 or row < 0:
 		push_error("Invalid row.")
 	
 	# For type safety, child squares of the row in the scene tree are assigned to a new, statically-typed Array.
 	var row_array : Array[Square] = []
-	# 1 is subtracted from the row number because Arrays start from 0 and I numbered rows from 1-4.
-	row_array.assign(rows[row - 1].get_children())
+	row_array.assign(rows[row].get_children())
 	
 	return row_array
 
 func get_column(col : int) -> Array[Square]:
-	if col > 4 or col < 1:
+	if col > BOARD_SIZE - 1 or col < 0:
 		push_error("Invalid column.")
 	
 	var column : Array[Square] = []
-	# Assign the index (minus one) of each row to a new Array to get the column of that index.
+	# Assign the index of each row to a new Array to get the column of that index.
 	for row : Node in rows:
-		column.append(row.get_child(col - 1))
+		column.append(row.get_child(col))
 	
 	return column
